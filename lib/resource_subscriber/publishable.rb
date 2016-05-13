@@ -17,7 +17,6 @@ module ResourceSubscriber
     end
 
     def publish_created
-      binding.pry
       ::ActionSubscriber::Publisher.publish("#{self.class._resource_publisher_config.routing_key}.created", self.attributes.to_json, "events")
     end
 
@@ -28,6 +27,5 @@ module ResourceSubscriber
     # def publishes_actions
     #
     # end
-
   end
 end
