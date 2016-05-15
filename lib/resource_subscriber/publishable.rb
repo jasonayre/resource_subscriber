@@ -12,7 +12,7 @@ module ResourceSubscriber
       # publisher_klass = ::Trax::Core::NamedClass.new("#{self.class.name}::Publisher", ResourceSubscriber::Publisher)
 
       self.class_attribute :resource_publisher
-      self.resource_publisher = ::ResourceSubscriber::Publisher.new(model: self)
+      self.resource_publisher = ::ResourceSubscriber::Publisher.new(model: self, config: ::ResourceSubscriber.publisher_config.deep_dup)
     end
 
     module ClassMethods

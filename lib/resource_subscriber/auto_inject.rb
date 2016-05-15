@@ -7,8 +7,7 @@ module ResourceSubscriber
       self._required_dependencies = ::Set.new
     end
 
-    def initialize(*args, **options)
-      super(**options)
+    def initialize(**options)
       self.class.ensure_required_dependencies(**options)
 
       options.each_pair do |k,v|
@@ -19,6 +18,7 @@ module ResourceSubscriber
     module ClassMethods
       def required_dependencies(*args)
         self._required_dependencies = self._required_dependencies + args
+        self.__send__(:attr_accessor, *args)
       end
 
       def ensure_required_dependencies(**options)
