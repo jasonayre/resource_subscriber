@@ -2,20 +2,18 @@ module ResourceSubscriber
   module Publishable
     extend ::ActiveSupport::Concern
 
-    class Config < ActiveSupport::InheritableOptions; end
-
     included do
       after_commit :publish_created, :on => :create
       after_commit :publish_updated, :on => :update
 
       self.class_attribute :resource_publisher
-      self.resource_publisher = ::ResourceSubscriber::Publisher.new(model: self, config: ::ResourceSubscriber.publisher_config.deep_dup)
+      self.resource_publisher = ::ResourceSubscriber::Publisher.new(model: self, config: ::ResourceSubscriber::PublisherConfig.new)
     end
 
     module ClassMethods
       def publish_to(routing_key, exchange:'events')
-        self.resource_publisher.config[:exchange] = exchange
-        self.resource_publisher.config[:routing_key] = routing_key
+        self.resource_publisher.config.exchange = exchange
+        self.resource_publisher.config.routing_key = routing_key
       end
     end
 
