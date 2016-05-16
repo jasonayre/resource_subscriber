@@ -1,8 +1,6 @@
 # ResourceSubscriber
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/resource_subscriber`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Publish/Subscribe to ActiveRecord model events via ActionSubscriber, work with them in model form.
 
 ## Installation
 
@@ -22,7 +20,64 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Setting Up Routes
+``` ruby
+::ActionSubscriber.draw_routes do
+  [ :created, :updated, :destroyed ].each do |action|
+    route ::DataWarehouse::PurchasesSubscriber, action, :stack => :resourceful, :exchange => :events
+  end
+end
+```
+
+### Publishing Model Changes
+``` ruby
+module Ecommerce
+  class Purchase < ::ActiveRecord::Base
+    include ::ResourceSubscriber::Publishable
+    resource_publisher.publish_as 'ecommerce/purchases'
+    #can also specify exchange
+    #resource_publisher.publish_as 'blog/posts', :exchange => 'events'
+  end
+end
+```
+
+### Setting Up Subscriber
+``` ruby
+module DataWarehouse
+  class PurchasesSubscriber < ::ActionSubscriber::Base
+    include ::ResourceSubscriber::Resourceful
+
+    def created
+      record_sale
+    end
+
+    def updated
+      record_reversal if was_chaged_back? || was_returned?
+    end
+
+    def destroyed
+      record_reversal if was_chaged_back? || was_returned?
+    end
+
+    private
+    def was_charged_back?
+      was_changed?(:status, :from => :processed, :to => :charged_back)
+    end
+
+    def was_returned?
+      was_changed?(:status, :from => :processed, :to => :returned)
+    end
+
+    def record_reversal
+      #do whatever
+    end
+
+    def record_sale
+      #store purchase in a data warehouse table
+    end
+  end
+end
+```
 
 ## Development
 
@@ -38,4 +93,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
