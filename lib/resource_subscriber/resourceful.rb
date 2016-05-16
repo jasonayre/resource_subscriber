@@ -6,25 +6,13 @@ module ResourceSubscriber
 
     def initialize(*args)
       super(*args)
-      @resource = env.payload.instance_variable_get(:@resource)
-      @changes = env.payload.instance_variable_get(:changes)
+
+      @resource = env["resource"]
+      @changes = env["changes"]
     end
 
-    # def created
-    #   binding.pry
-    # end
-
-    private
-    # def parsed_payload
-    #   @parsed_payload ||= ::JSON.parse(payload)
-    # end
-    #
-    # def resource
-    #   @resource ||= resource_class.find(payload["id"])
-    # end
-    #
-    # def resource_class
-    #   @resource_class ||= ::Trax::Model::Registry.model_type_for_uuid(parsed_payload["id"])
-    # end
+    def was_changed?(*args, **options)
+      @changes.was_changed?(*args, **options)
+    end
   end
 end

@@ -8,6 +8,7 @@ module ResourceSubscriber
 
   autoload :AutoInject
   autoload :Config
+  autoload :Changes
   autoload :Message
   autoload :Middlewares
   autoload :Resourceful
