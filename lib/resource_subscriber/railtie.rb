@@ -5,7 +5,8 @@ module ResourceSubscriber
         use ::ResourceSubscriber::Middlewares::HasChanges
         use ::ResourceSubscriber::Middlewares::Resourceful
 
-        ::ActiveSupport.run_load_hooks(:resource_subscriber_resourceful_stack, self) if defined?("Rails")
+        ::ActiveSupport.run_load_hooks(:resource_subscriber_resourceful_stack, self)
+        self
       end
     end
   end

@@ -5,6 +5,7 @@ module ResourceSubscriber
     included do
       after_commit :publish_created, :on => :create
       after_commit :publish_updated, :on => :update
+      after_commit :publish_destroyed, :on => :destroy
 
       self.class_attribute :resource_publisher
       self.resource_publisher = ::ResourceSubscriber::Publisher.new(model: self, config: ::ResourceSubscriber::PublisherConfig.new)
@@ -19,6 +20,10 @@ module ResourceSubscriber
 
     def publish_created
       self.resource_publisher.publish_resource_message('created', self)
+    end
+
+    def publish_destroyed
+      self.resource_publisher.publish_resource_message('destroyed', self)
     end
 
     def publish_updated

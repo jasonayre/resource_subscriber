@@ -16,5 +16,9 @@ module ResourceSubscriber
   autoload :Publisher
   autoload :PublisherConfig
 
-  require "resource_subscriber/railtie" if defined?(Rails)
+  def self.load_railtie
+    ::ResourceSubscriber::Railtie
+  end
+
+  load_railtie if defined?(Rails)
 end
