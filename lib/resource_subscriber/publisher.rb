@@ -15,7 +15,7 @@ module ResourceSubscriber
         :changes => resource.previous_changes
       ).to_json
 
-      ::ActionSubscriber::Publisher.publish("#{self.config.routing_key}.#{action}", message, self.config.exchange, :content_type => 'application/json')
+      ::ActionSubscriber::Publisher.publish_async("#{self.config.routing_key}.#{action}", message, self.config.exchange, :content_type => 'application/json')
     end
 
     def publish_as(routing_key, exchange:'events')
