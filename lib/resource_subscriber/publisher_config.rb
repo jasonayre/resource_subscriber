@@ -1,6 +1,9 @@
 module ResourceSubscriber
-  class PublisherConfig < ::Trax::Core::Types::Struct
-    string :exchange, :default => "events"
-    string :routing_key, :default => ""
+  class PublisherConfig < ::ActiveSupport::InheritableOptions
+    def initialize(*args)
+      super(*args)
+
+      self[:exchange] = "events"
+    end
   end
 end

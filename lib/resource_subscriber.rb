@@ -1,7 +1,6 @@
 require "resource_subscriber/version"
 require 'active_support/all'
 require 'action_subscriber'
-require 'trax_core'
 
 module ResourceSubscriber
   extend ::ActiveSupport::Autoload
