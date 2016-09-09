@@ -14,7 +14,6 @@ module ResourceSubscriber
   autoload :Resourceful
   autoload :Publishable
   autoload :Publisher
-  autoload :PublisherConfig
 
   def self.load_railtie
     ::ResourceSubscriber::Railtie
