@@ -1,12 +1,10 @@
-require "active_support/ordered_options"
-
 module ResourceSubscriber
-  class Configuration < ::ActiveSupport::InheritableOptions
+  class Configuration < ::ActiveSupport::OrderedOptions
     def self.with_defaults
-      new(
+      new({
         :exchange => 'events',
-        :publishing_options => { :content_type => 'application/json' }
-      )
+        :publishing_options => { :content_type => 'application/json' }.freeze
+      }.freeze)
     end
   end
 end

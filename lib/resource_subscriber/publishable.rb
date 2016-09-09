@@ -9,7 +9,7 @@ module ResourceSubscriber
 
       self.class_attribute :resource_publisher
 
-      configuration = ::ResourceSubscriber.configuration.inheritable_copy
+      configuration = ::ResourceSubscriber.configuration.deep_dup
       self.resource_publisher = ::ResourceSubscriber::Publisher.new(model: self, config: configuration)
     end
 
