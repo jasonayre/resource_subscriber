@@ -8,13 +8,14 @@ module ResourceSubscriber
       after_commit :publish_destroyed, :on => :destroy
 
       self.class_attribute :resource_publisher
-      self.resource_publisher = ::ResourceSubscriber::Publisher.new(model: self, config: ::ResourceSubscriber::PublisherConfig.new)
+
+      configuration = ::ResourceSubscriber.configuration.deep_dup
+      self.resource_publisher = ::ResourceSubscriber::Publisher.new(model: self, config: configuration)
     end
 
     module ClassMethods
-      def publish_to(routing_key, exchange:'events')
-        self.resource_publisher.config.exchange = exchange
-        self.resource_publisher.config.routing_key = routing_key
+      def publish_to(routing_key, &block)
+        self.resource_publisher.publish_as(routing_key, &block)
       end
     end
 
