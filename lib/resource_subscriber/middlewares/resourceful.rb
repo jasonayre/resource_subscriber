@@ -12,6 +12,7 @@ module ResourceSubscriber
         env["resource"] = if env["action"] == :destroyed
           record = model.instantiate(attributes)
           record.instance_variable_set(:@destroyed, true)
+          record.freeze
           record
         else
           model.find_by(:id => attributes["id"])
