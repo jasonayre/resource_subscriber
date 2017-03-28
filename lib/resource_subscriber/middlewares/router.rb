@@ -10,7 +10,7 @@ module ResourceSubscriber
       def call(env)
         logger.info "START #{env.message_id} #{env.subscriber}##{env.action}"
 
-        result = if env["resource"]
+        if env["resource"]
           env.subscriber.run_action_with_filters(env, env.action)
         else
           env.acknowledge
