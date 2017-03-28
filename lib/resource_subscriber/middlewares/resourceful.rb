@@ -8,7 +8,7 @@ module ResourceSubscriber
       def call(env)
         attributes = env["payload"]["resource"]
         model = env["payload"]["resource_type"].constantize
-        env["resource"] = model.find(attributes["id"])
+        env["resource"] = model.find_by(:id => attributes["id"])
         @app.call(env)
       end
     end
