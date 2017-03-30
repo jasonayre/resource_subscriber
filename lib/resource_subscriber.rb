@@ -10,6 +10,7 @@ module ResourceSubscriber
   autoload :Configuration
   autoload :Message
   autoload :Middlewares
+  autoload :MiddlewareRunner
   autoload :Railtie
   autoload :Resourceful
   autoload :Publishable

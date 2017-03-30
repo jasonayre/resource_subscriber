@@ -4,5 +4,6 @@ module ResourceSubscriber
 
     autoload :HasChanges
     autoload :Resourceful
+    autoload :Router
   end
 end
