@@ -2,12 +2,13 @@ module ResourceSubscriber
   class Message
     include ActiveModel::Serializers::JSON
 
-    attr_accessor :resource_type, :resource, :changes
+    attr_accessor :resource_type, :resource, :changes, :params
 
-    def initialize(resource)
+    def initialize(resource, params={})
       @resource_type = resource.class.base_class.name
       @changes = resource.changes.blank? ? resource.previous_changes : resource.changes
       @resource = resource.attributes
+      @params = params
     end
 
     def attributes=(hash)
